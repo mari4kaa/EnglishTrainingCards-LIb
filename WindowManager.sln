@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WindowManager", "WindowManager.vcxproj", "{8FCBCF44-D766-46ED-9B07-11FD69517023}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EnglishTrainer", "..\EnglishTrainer\EnglishTrainer.vcxproj", "{AFCD21BC-3281-4B92-BF55-D07989EE233D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8FCBCF44-D766-46ED-9B07-11FD69517023} = {8FCBCF44-D766-46ED-9B07-11FD69517023}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

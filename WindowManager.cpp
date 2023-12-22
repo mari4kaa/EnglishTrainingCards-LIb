@@ -1,10 +1,7 @@
 // WindowManager.cpp : Defines the functions for the static library.
 //
 
-#include "pch.h"
 #include "framework.h"
-
-// TODO: This is an example of a library function
-void fnWindowManager()
-{
-}
+#include "MyDialog.h"
+#include "FullAnswerDialog.h"
+#include "TrueFalseDialog.h"
