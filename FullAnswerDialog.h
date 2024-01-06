@@ -1,19 +1,24 @@
+#ifndef FULLANSWERDIALOG_H
+#define FULLANSWERDIALOG_H
+
 #pragma once
 #include "MyDialog.h"
 
-class FullAnswerDialog : public virtual MyDialog
+class MYLIB_API FullAnswerDialog : public MyDialog
 {
-private:
-    static wstring word;
-    static wstring definition;
+protected:
+    wstring word;
+    wstring definition;
 
-    static HWND hDefinitionLabel;
-    static HWND hWordTextBox;
+    HWND hWordTextBox;
 
 public:
     FullAnswerDialog();
-    ~FullAnswerDialog();
-    static void OnInitDialog(HWND hDlg);
-    void Show(HWND parent, HINSTANCE parentInst, list<wstring> data);
-    static void OnSubmit();
+    virtual ~FullAnswerDialog();
+    void OnInitDialog(HWND hDlg);
+    virtual int Show(HWND parent, list<wstring> data);
+    void OnSubmit(wstring buttonAnsw = L"");
+    static INT_PTR CALLBACK DlgFullSimple(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 };
+
+#endif

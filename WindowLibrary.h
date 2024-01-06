@@ -1,5 +1,5 @@
 #pragma once
-#include "MyDialog.h"
-#include "FullAnswerDialog.h"
-#include "TrueFalseDialog.h"
-#include "QuizDialog.h"
+#include "FullAnswerStar.h"
+#include "TrueFalseStar.h"
+#include "QuizStar.h"
+#include "OneAnswerStar.h"

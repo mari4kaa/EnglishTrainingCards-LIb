@@ -27,7 +27,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -86,7 +86,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;MYLIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -152,21 +152,35 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
+    <ClInclude Include="FullAnswerStar.h" />
     <ClInclude Include="MyDialog.h" />
+    <ClInclude Include="OneAnswerDialog.h" />
+    <ClInclude Include="OneAnswerStar.h" />
     <ClInclude Include="QuizDialog.h" />
+    <ClInclude Include="QuizStar.h" />
+    <ClInclude Include="StarShape.h" />
+    <ClInclude Include="TrueFalseStar.h" />
     <ClInclude Include="WindowLibrary.h" />
     <ClInclude Include="resource1.h" />
     <ClInclude Include="TrueFalseDialog.h" />
     <ClInclude Include="FullAnswerDialog.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="FullAnswerStar.cpp" />
+    <ClCompile Include="OneAnswerDialog.cpp" />
+    <ClCompile Include="OneAnswerStar.cpp" />
     <ClCompile Include="QuizDialog.cpp" />
+    <ClCompile Include="QuizStar.cpp" />
+    <ClCompile Include="StarShape.cpp" />
     <ClCompile Include="TrueFalseDialog.cpp" />
     <ClCompile Include="FullAnswerDialog.cpp" />
-    <ClCompile Include="WindowManager.cpp" />
+    <ClCompile Include="TrueFalseStar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WindowLibrary.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,19 +1,20 @@
+#ifndef TRUEFALSEDIALOG_H
+#define TRUEFALSEDIALOG_H
+
 #pragma once
 #include "MyDialog.h"
 
-class TrueFalseDialog : public virtual MyDialog
+class MYLIB_API TrueFalseDialog : public virtual MyDialog
 {
-private:
-    static wstring word;
-    static wstring definition;
-    static wstring answer;
-
-    static HWND hDefinitionLabel;
-    static HWND hWordLabel;
+protected:
+    wstring word, definition, answer;
 public:
     TrueFalseDialog();
-    ~TrueFalseDialog();
-    static void OnInitDialog(HWND hDlg);
-    void Show(HWND parent, HINSTANCE parentInst, list<wstring> data);
-    static void OnSubmit(wstring buttonAnsw);
+    virtual ~TrueFalseDialog();
+    void OnInitDialog(HWND hDlg);
+    virtual int Show(HWND parent, list<wstring> data);
+    void OnSubmit(wstring buttonAnsw = L"");
+    static INT_PTR CALLBACK DlgTrueFalse(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 };
+
+#endif

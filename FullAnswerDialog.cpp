@@ -3,25 +3,23 @@
 FullAnswerDialog::FullAnswerDialog() {};
 FullAnswerDialog::~FullAnswerDialog() {};
 
-wstring FullAnswerDialog::word = L"";
-wstring FullAnswerDialog::definition = L"";
-HWND FullAnswerDialog::hDefinitionLabel = NULL;
-HWND FullAnswerDialog::hWordTextBox = NULL;
-
-INT_PTR CALLBACK DlgVocabulary(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK FullAnswerDialog::DlgFullSimple(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+    FullAnswerDialog* dialog = reinterpret_cast<FullAnswerDialog*>(GetWindowLongPtr(hDlg, GWLP_USERDATA));
     switch (msg)
     {
         case WM_INITDIALOG:
         {
-            FullAnswerDialog::OnInitDialog(hDlg);
+            dialog = reinterpret_cast<FullAnswerDialog*>(lParam);
+            SetWindowLongPtr(hDlg, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(dialog));
+            dialog->OnInitDialog(hDlg);
             return (INT_PTR)TRUE;
         }
 
         case WM_COMMAND:
             if(LOWORD(wParam) == ID_SUBMIT_BUTTON)
             {
-                FullAnswerDialog::OnSubmit();
+                dialog->OnSubmit();
                 EndDialog(hDlg, LOWORD(wParam));
                 return (INT_PTR)TRUE;
             }
@@ -35,27 +33,27 @@ INT_PTR CALLBACK DlgVocabulary(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam
     return (INT_PTR)FALSE;
 }
 
-void FullAnswerDialog::Show(HWND parent, HINSTANCE parentInst, list<wstring> data)
+int FullAnswerDialog::Show(HWND parent, list<wstring> data)
 {
     if (data.size() == 2)
     {
         word = data.front();
         definition = data.back();
-        DialogBox(parentInst, MAKEINTRESOURCE(IDD_DIALOG1), parent, DlgVocabulary);
+        DialogBoxParam(NULL, MAKEINTRESOURCE(IDD_DIALOG1), parent, DlgFullSimple, reinterpret_cast<LPARAM>(this));
     } else {
         MessageBox(NULL, L"Wrong data format in dictionary.", L"Result", MB_OK | MB_ICONERROR);
     }
+    return result;
 }
 
 void FullAnswerDialog::OnInitDialog(HWND hDlg)
 {
-    hDefinitionLabel = GetDlgItem(hDlg, IDC_DEFINITION_LABEL);
     hWordTextBox = GetDlgItem(hDlg, IDC_WORD_TEXTBOX);
 
-    SetWindowText(hDefinitionLabel, definition.c_str());
+    SetDlgItemText(hDlg, IDC_DEFINITION_LABEL, definition.c_str());
 }
 
-void FullAnswerDialog::OnSubmit()
+void FullAnswerDialog::OnSubmit(wstring buttonAnsw)
 {
     WCHAR buffer[256];
     GetWindowText(hWordTextBox, buffer, ARRAYSIZE(buffer));
@@ -68,4 +66,5 @@ void FullAnswerDialog::OnSubmit()
         L"Result",
         MB_OK | (found ? MB_ICONINFORMATION : MB_ICONERROR)
     );
+    result = (int)found - 1;
 };

@@ -3,26 +3,23 @@
 QuizDialog::QuizDialog() {};
 QuizDialog::~QuizDialog() {};
 
-wstring QuizDialog::option1 = L"";
-wstring QuizDialog::option2 = L"";
-wstring QuizDialog::option3 = L"";
-wstring QuizDialog::definition = L"";
-wstring QuizDialog::rightAnswers = L"";
-
-INT_PTR CALLBACK DlgQuiz(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK QuizDialog::DlgQuiz(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+    QuizDialog* dialog = reinterpret_cast<QuizDialog*>(GetWindowLongPtr(hDlg, GWLP_USERDATA));
     switch (msg)
     {
     case WM_INITDIALOG:
     {
-        QuizDialog::OnInitDialog(hDlg);
+        dialog = reinterpret_cast<QuizDialog*>(lParam);
+        SetWindowLongPtr(hDlg, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(dialog));
+        dialog->OnInitDialog(hDlg);
         return (INT_PTR)TRUE;
     }
 
     case WM_COMMAND:
         if (LOWORD(wParam) == ID_SUBMIT_BUTTON)
         {
-            QuizDialog::OnSubmit(hDlg);
+            dialog->OnSubmit();
             EndDialog(hDlg, LOWORD(wParam));
             return (INT_PTR)TRUE;
         }
@@ -36,7 +33,7 @@ INT_PTR CALLBACK DlgQuiz(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
     return (INT_PTR)FALSE;
 };
 
-void QuizDialog::Show(HWND parent, HINSTANCE parentInst, list<wstring> data)
+int QuizDialog::Show(HWND parent, list<wstring> data)
 {
     if (data.size() == 5) {
         auto iter = data.begin();
@@ -45,10 +42,11 @@ void QuizDialog::Show(HWND parent, HINSTANCE parentInst, list<wstring> data)
         option3 = *(++iter);
         definition = *(++iter);
         rightAnswers = *(++iter);
-        DialogBox(parentInst, MAKEINTRESOURCE(IDD_DIALOG3), parent, DlgQuiz);
+        DialogBoxParam(NULL, MAKEINTRESOURCE(IDD_DIALOG3), parent, DlgQuiz, reinterpret_cast<LPARAM>(this));
     } else {
         MessageBox(NULL, L"Wrong data format in dictionary.", L"Result", MB_OK | MB_ICONERROR);
     }
+    return result;
 };
 
 void QuizDialog::OnInitDialog(HWND hDlg)
@@ -60,8 +58,9 @@ void QuizDialog::OnInitDialog(HWND hDlg)
     SetDlgItemText(hDlg, IDC_DEFINITION_LABEL, definition.c_str());
 };
 
-void QuizDialog::OnSubmit(HWND hDlg)
+void QuizDialog::OnSubmit(wstring buttonAnsw)
 {
+    HWND hDlg = GetActiveWindow();
     bool status1 = (IsDlgButtonChecked(hDlg, IDC_CHECK1) == BST_CHECKED)? true: false;
     bool status2 = (IsDlgButtonChecked(hDlg, IDC_CHECK2) == BST_CHECKED) ? true : false;
     bool status3 = (IsDlgButtonChecked(hDlg, IDC_CHECK3) == BST_CHECKED) ? true : false;
@@ -78,4 +77,5 @@ void QuizDialog::OnSubmit(HWND hDlg)
         L"Result",
         MB_OK | (isCorrect ? MB_ICONINFORMATION : MB_ICONERROR)
     );
+    result = (int)isCorrect - 1;
 };
